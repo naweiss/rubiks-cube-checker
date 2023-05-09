@@ -3,6 +3,7 @@ from copy import deepcopy
 import numpy as np
 
 
+# TODO: add type hints
 class RubiksCube:
     def __init__(self, faces=None):
         if faces is not None:
