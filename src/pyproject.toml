@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rubiks-cube-checker"
+version = "0.0.1"
+description = "Python package to check if a Rubik's cube assembly is solveable"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+requires-python=">=3.7"
+dependencies = [
+    "numpy>=1.13",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+]
