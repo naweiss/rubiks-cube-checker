@@ -1,22 +1,22 @@
 import random
 
-from rubiks_cube_checker.cube import RubiksCube
+from rubiks_cube_checker.cube import RubiksCube, CubeFace
 
 
 # TODO: delete
 def rotate_edges(cube):
-    temp = cube.faces['U'][2, 1]
-    cube.faces['U'][2, 1] = cube.faces['F'][0, 1]
-    cube.faces['F'][0, 1] = temp
-    temp = cube.faces['D'][0, 1]
-    cube.faces['D'][0, 1] = cube.faces['F'][2, 1]
-    cube.faces['F'][2, 1] = temp
-    temp = cube.faces['R'][1, 0]
-    cube.faces['R'][1, 0] = cube.faces['F'][1, 2]
-    cube.faces['F'][1, 2] = temp
-    temp = cube.faces['L'][1, 2]
-    cube.faces['L'][1, 2] = cube.faces['F'][1, 0]
-    cube.faces['F'][1, 0] = temp
+    temp = cube.faces[CubeFace.UP][2, 1]
+    cube.faces[CubeFace.UP][2, 1] = cube.faces[CubeFace.FRONT][0, 1]
+    cube.faces[CubeFace.FRONT][0, 1] = temp
+    temp = cube.faces[CubeFace.DOWN][0, 1]
+    cube.faces[CubeFace.DOWN][0, 1] = cube.faces[CubeFace.FRONT][2, 1]
+    cube.faces[CubeFace.FRONT][2, 1] = temp
+    temp = cube.faces[CubeFace.RIGHT][1, 0]
+    cube.faces[CubeFace.RIGHT][1, 0] = cube.faces[CubeFace.FRONT][1, 2]
+    cube.faces[CubeFace.FRONT][1, 2] = temp
+    temp = cube.faces[CubeFace.LEFT][1, 2]
+    cube.faces[CubeFace.LEFT][1, 2] = cube.faces[CubeFace.FRONT][1, 0]
+    cube.faces[CubeFace.FRONT][1, 0] = temp
 
 
 def get_edge_parity(edge):
@@ -38,31 +38,31 @@ def get_corner_parity(corner):
 
 def total_edge_parity(cube):
     return sum([
-        get_edge_parity([cube.faces['U'][0, 1], cube.faces['B'][0, 1]]),
-        get_edge_parity([cube.faces['U'][1, 2], cube.faces['R'][0, 1]]),
-        get_edge_parity([cube.faces['U'][2, 1], cube.faces['F'][0, 1]]),
-        get_edge_parity([cube.faces['U'][1, 0], cube.faces['L'][0, 1]]),
-        get_edge_parity([cube.faces['D'][0, 1], cube.faces['F'][2, 1]]),
-        get_edge_parity([cube.faces['D'][1, 2], cube.faces['R'][2, 1]]),
-        get_edge_parity([cube.faces['D'][2, 1], cube.faces['B'][2, 1]]),
-        get_edge_parity([cube.faces['D'][1, 0], cube.faces['L'][2, 1]]),
-        get_edge_parity([cube.faces['F'][1, 2], cube.faces['R'][1, 0]]),
-        get_edge_parity([cube.faces['F'][1, 0], cube.faces['L'][1, 2]]),
-        get_edge_parity([cube.faces['B'][1, 2], cube.faces['L'][1, 0]]),
-        get_edge_parity([cube.faces['B'][1, 0], cube.faces['R'][1, 2]]),
+        get_edge_parity([cube.faces[CubeFace.UP][0, 1], cube.faces[CubeFace.BACK][0, 1]]),
+        get_edge_parity([cube.faces[CubeFace.UP][1, 2], cube.faces[CubeFace.RIGHT][0, 1]]),
+        get_edge_parity([cube.faces[CubeFace.UP][2, 1], cube.faces[CubeFace.FRONT][0, 1]]),
+        get_edge_parity([cube.faces[CubeFace.UP][1, 0], cube.faces[CubeFace.LEFT][0, 1]]),
+        get_edge_parity([cube.faces[CubeFace.DOWN][0, 1], cube.faces[CubeFace.FRONT][2, 1]]),
+        get_edge_parity([cube.faces[CubeFace.DOWN][1, 2], cube.faces[CubeFace.RIGHT][2, 1]]),
+        get_edge_parity([cube.faces[CubeFace.DOWN][2, 1], cube.faces[CubeFace.BACK][2, 1]]),
+        get_edge_parity([cube.faces[CubeFace.DOWN][1, 0], cube.faces[CubeFace.LEFT][2, 1]]),
+        get_edge_parity([cube.faces[CubeFace.FRONT][1, 2], cube.faces[CubeFace.RIGHT][1, 0]]),
+        get_edge_parity([cube.faces[CubeFace.FRONT][1, 0], cube.faces[CubeFace.LEFT][1, 2]]),
+        get_edge_parity([cube.faces[CubeFace.BACK][1, 2], cube.faces[CubeFace.LEFT][1, 0]]),
+        get_edge_parity([cube.faces[CubeFace.BACK][1, 0], cube.faces[CubeFace.RIGHT][1, 2]]),
     ])
 
 
 def total_corner_parity(cube):
     return sum([
-        get_corner_parity([cube.faces['U'][0, 0], cube.faces['B'][0, 2], cube.faces['L'][0, 0]]),
-        get_corner_parity([cube.faces['U'][0, 2], cube.faces['R'][0, 2], cube.faces['B'][0, 0]]),
-        get_corner_parity([cube.faces['U'][2, 0], cube.faces['L'][0, 2], cube.faces['F'][0, 0]]),
-        get_corner_parity([cube.faces['U'][2, 2], cube.faces['F'][0, 2], cube.faces['R'][0, 0]]),
-        get_corner_parity([cube.faces['D'][0, 0], cube.faces['F'][2, 0], cube.faces['L'][2, 2]]),
-        get_corner_parity([cube.faces['D'][0, 2], cube.faces['R'][2, 0], cube.faces['F'][2, 2]]),
-        get_corner_parity([cube.faces['D'][2, 0], cube.faces['L'][2, 0], cube.faces['B'][2, 2]]),
-        get_corner_parity([cube.faces['D'][2, 2], cube.faces['B'][2, 0], cube.faces['R'][2, 2]]),
+        get_corner_parity([cube.faces[CubeFace.UP][0, 0], cube.faces[CubeFace.BACK][0, 2], cube.faces[CubeFace.LEFT][0, 0]]),
+        get_corner_parity([cube.faces[CubeFace.UP][0, 2], cube.faces[CubeFace.RIGHT][0, 2], cube.faces[CubeFace.BACK][0, 0]]),
+        get_corner_parity([cube.faces[CubeFace.UP][2, 0], cube.faces[CubeFace.LEFT][0, 2], cube.faces[CubeFace.FRONT][0, 0]]),
+        get_corner_parity([cube.faces[CubeFace.UP][2, 2], cube.faces[CubeFace.FRONT][0, 2], cube.faces[CubeFace.RIGHT][0, 0]]),
+        get_corner_parity([cube.faces[CubeFace.DOWN][0, 0], cube.faces[CubeFace.FRONT][2, 0], cube.faces[CubeFace.LEFT][2, 2]]),
+        get_corner_parity([cube.faces[CubeFace.DOWN][0, 2], cube.faces[CubeFace.RIGHT][2, 0], cube.faces[CubeFace.FRONT][2, 2]]),
+        get_corner_parity([cube.faces[CubeFace.DOWN][2, 0], cube.faces[CubeFace.LEFT][2, 0], cube.faces[CubeFace.BACK][2, 2]]),
+        get_corner_parity([cube.faces[CubeFace.DOWN][2, 2], cube.faces[CubeFace.BACK][2, 0], cube.faces[CubeFace.RIGHT][2, 2]]),
     ])
 
 
@@ -97,30 +97,30 @@ def calculate_permutation(parings):
 def total_edge_permutation_parity(cube):
     solved_cube = RubiksCube()
     parings = {
-        (cube.faces['U'][0, 1], cube.faces['B'][0, 1]):
-            (solved_cube.faces['U'][0, 1], solved_cube.faces['B'][0, 1]),
-        (cube.faces['U'][1, 2], cube.faces['R'][0, 1]):
-            (solved_cube.faces['U'][1, 2], solved_cube.faces['R'][0, 1]),
-        (cube.faces['U'][2, 1], cube.faces['F'][0, 1]):
-            (solved_cube.faces['U'][2, 1], solved_cube.faces['F'][0, 1]),
-        (cube.faces['U'][1, 0], cube.faces['L'][0, 1]):
-            (solved_cube.faces['U'][1, 0], solved_cube.faces['L'][0, 1]),
-        (cube.faces['D'][0, 1], cube.faces['F'][2, 1]):
-            (solved_cube.faces['D'][0, 1], solved_cube.faces['F'][2, 1]),
-        (cube.faces['D'][1, 2], cube.faces['R'][2, 1]):
-            (solved_cube.faces['D'][1, 2], solved_cube.faces['R'][2, 1]),
-        (cube.faces['D'][2, 1], cube.faces['B'][2, 1]):
-            (solved_cube.faces['D'][2, 1], solved_cube.faces['B'][2, 1]),
-        (cube.faces['D'][1, 0], cube.faces['L'][2, 1]):
-            (solved_cube.faces['D'][1, 0], solved_cube.faces['L'][2, 1]),
-        (cube.faces['F'][1, 2], cube.faces['R'][1, 0]):
-            (solved_cube.faces['F'][1, 2], solved_cube.faces['R'][1, 0]),
-        (cube.faces['F'][1, 0], cube.faces['L'][1, 2]):
-            (solved_cube.faces['F'][1, 0], solved_cube.faces['L'][1, 2]),
-        (cube.faces['B'][1, 2], cube.faces['L'][1, 0]):
-            (solved_cube.faces['B'][1, 2], solved_cube.faces['L'][1, 0]),
-        (cube.faces['B'][1, 0], cube.faces['R'][1, 2]):
-            (solved_cube.faces['B'][1, 0], solved_cube.faces['R'][1, 2]),
+        (cube.faces[CubeFace.UP][0, 1], cube.faces[CubeFace.BACK][0, 1]):
+            (solved_cube.faces[CubeFace.UP][0, 1], solved_cube.faces[CubeFace.BACK][0, 1]),
+        (cube.faces[CubeFace.UP][1, 2], cube.faces[CubeFace.RIGHT][0, 1]):
+            (solved_cube.faces[CubeFace.UP][1, 2], solved_cube.faces[CubeFace.RIGHT][0, 1]),
+        (cube.faces[CubeFace.UP][2, 1], cube.faces[CubeFace.FRONT][0, 1]):
+            (solved_cube.faces[CubeFace.UP][2, 1], solved_cube.faces[CubeFace.FRONT][0, 1]),
+        (cube.faces[CubeFace.UP][1, 0], cube.faces[CubeFace.LEFT][0, 1]):
+            (solved_cube.faces[CubeFace.UP][1, 0], solved_cube.faces[CubeFace.LEFT][0, 1]),
+        (cube.faces[CubeFace.DOWN][0, 1], cube.faces[CubeFace.FRONT][2, 1]):
+            (solved_cube.faces[CubeFace.DOWN][0, 1], solved_cube.faces[CubeFace.FRONT][2, 1]),
+        (cube.faces[CubeFace.DOWN][1, 2], cube.faces[CubeFace.RIGHT][2, 1]):
+            (solved_cube.faces[CubeFace.DOWN][1, 2], solved_cube.faces[CubeFace.RIGHT][2, 1]),
+        (cube.faces[CubeFace.DOWN][2, 1], cube.faces[CubeFace.BACK][2, 1]):
+            (solved_cube.faces[CubeFace.DOWN][2, 1], solved_cube.faces[CubeFace.BACK][2, 1]),
+        (cube.faces[CubeFace.DOWN][1, 0], cube.faces[CubeFace.LEFT][2, 1]):
+            (solved_cube.faces[CubeFace.DOWN][1, 0], solved_cube.faces[CubeFace.LEFT][2, 1]),
+        (cube.faces[CubeFace.FRONT][1, 2], cube.faces[CubeFace.RIGHT][1, 0]):
+            (solved_cube.faces[CubeFace.FRONT][1, 2], solved_cube.faces[CubeFace.RIGHT][1, 0]),
+        (cube.faces[CubeFace.FRONT][1, 0], cube.faces[CubeFace.LEFT][1, 2]):
+            (solved_cube.faces[CubeFace.FRONT][1, 0], solved_cube.faces[CubeFace.LEFT][1, 2]),
+        (cube.faces[CubeFace.BACK][1, 2], cube.faces[CubeFace.LEFT][1, 0]):
+            (solved_cube.faces[CubeFace.BACK][1, 2], solved_cube.faces[CubeFace.LEFT][1, 0]),
+        (cube.faces[CubeFace.BACK][1, 0], cube.faces[CubeFace.RIGHT][1, 2]):
+            (solved_cube.faces[CubeFace.BACK][1, 0], solved_cube.faces[CubeFace.RIGHT][1, 2]),
     }
     return calculate_permutation(parings)
 
@@ -128,22 +128,22 @@ def total_edge_permutation_parity(cube):
 def total_corner_permutation_parity(cube):
     solved_cube = RubiksCube()
     parings = {
-        (cube.faces['U'][0, 0], cube.faces['B'][0, 2], cube.faces['L'][0, 0]):
-            (solved_cube.faces['U'][0, 0], solved_cube.faces['B'][0, 2], solved_cube.faces['L'][0, 0]),
-        (cube.faces['U'][0, 2], cube.faces['R'][0, 2], cube.faces['B'][0, 0]):
-            (solved_cube.faces['U'][0, 2], solved_cube.faces['R'][0, 2], solved_cube.faces['B'][0, 0]),
-        (cube.faces['U'][2, 0], cube.faces['L'][0, 2], cube.faces['F'][0, 0]):
-            (solved_cube.faces['U'][2, 0], solved_cube.faces['L'][0, 2], solved_cube.faces['F'][0, 0]),
-        (cube.faces['U'][2, 2], cube.faces['F'][0, 2], cube.faces['R'][0, 0]):
-            (solved_cube.faces['U'][2, 2], solved_cube.faces['F'][0, 2], solved_cube.faces['R'][0, 0]),
-        (cube.faces['D'][0, 0], cube.faces['F'][2, 0], cube.faces['L'][2, 2]):
-            (solved_cube.faces['D'][0, 0], solved_cube.faces['F'][2, 0], solved_cube.faces['L'][2, 2]),
-        (cube.faces['D'][0, 2], cube.faces['R'][2, 0], cube.faces['F'][2, 2]):
-            (solved_cube.faces['D'][0, 2], solved_cube.faces['R'][2, 0], solved_cube.faces['F'][2, 2]),
-        (cube.faces['D'][2, 0], cube.faces['L'][2, 0], cube.faces['B'][2, 2]):
-            (solved_cube.faces['D'][2, 0], solved_cube.faces['L'][2, 0], solved_cube.faces['B'][2, 2]),
-        (cube.faces['D'][2, 2], cube.faces['B'][2, 0], cube.faces['R'][2, 2]):
-            (solved_cube.faces['D'][2, 2], solved_cube.faces['B'][2, 0], solved_cube.faces['R'][2, 2]),
+        (cube.faces[CubeFace.UP][0, 0], cube.faces[CubeFace.BACK][0, 2], cube.faces[CubeFace.LEFT][0, 0]):
+            (solved_cube.faces[CubeFace.UP][0, 0], solved_cube.faces[CubeFace.BACK][0, 2], solved_cube.faces[CubeFace.LEFT][0, 0]),
+        (cube.faces[CubeFace.UP][0, 2], cube.faces[CubeFace.RIGHT][0, 2], cube.faces[CubeFace.BACK][0, 0]):
+            (solved_cube.faces[CubeFace.UP][0, 2], solved_cube.faces[CubeFace.RIGHT][0, 2], solved_cube.faces[CubeFace.BACK][0, 0]),
+        (cube.faces[CubeFace.UP][2, 0], cube.faces[CubeFace.LEFT][0, 2], cube.faces[CubeFace.FRONT][0, 0]):
+            (solved_cube.faces[CubeFace.UP][2, 0], solved_cube.faces[CubeFace.LEFT][0, 2], solved_cube.faces[CubeFace.FRONT][0, 0]),
+        (cube.faces[CubeFace.UP][2, 2], cube.faces[CubeFace.FRONT][0, 2], cube.faces[CubeFace.RIGHT][0, 0]):
+            (solved_cube.faces[CubeFace.UP][2, 2], solved_cube.faces[CubeFace.FRONT][0, 2], solved_cube.faces[CubeFace.RIGHT][0, 0]),
+        (cube.faces[CubeFace.DOWN][0, 0], cube.faces[CubeFace.FRONT][2, 0], cube.faces[CubeFace.LEFT][2, 2]):
+            (solved_cube.faces[CubeFace.DOWN][0, 0], solved_cube.faces[CubeFace.FRONT][2, 0], solved_cube.faces[CubeFace.LEFT][2, 2]),
+        (cube.faces[CubeFace.DOWN][0, 2], cube.faces[CubeFace.RIGHT][2, 0], cube.faces[CubeFace.FRONT][2, 2]):
+            (solved_cube.faces[CubeFace.DOWN][0, 2], solved_cube.faces[CubeFace.RIGHT][2, 0], solved_cube.faces[CubeFace.FRONT][2, 2]),
+        (cube.faces[CubeFace.DOWN][2, 0], cube.faces[CubeFace.LEFT][2, 0], cube.faces[CubeFace.BACK][2, 2]):
+            (solved_cube.faces[CubeFace.DOWN][2, 0], solved_cube.faces[CubeFace.LEFT][2, 0], solved_cube.faces[CubeFace.BACK][2, 2]),
+        (cube.faces[CubeFace.DOWN][2, 2], cube.faces[CubeFace.BACK][2, 0], cube.faces[CubeFace.RIGHT][2, 2]):
+            (solved_cube.faces[CubeFace.DOWN][2, 2], solved_cube.faces[CubeFace.BACK][2, 0], solved_cube.faces[CubeFace.RIGHT][2, 2]),
     }
     return calculate_permutation(parings)
 

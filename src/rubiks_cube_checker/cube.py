@@ -1,61 +1,71 @@
-from copy import deepcopy
+import copy
+import enum
 
 import numpy as np
 
 
+class CubeFace(str, enum.Enum):
+    UP = 'U'
+    DOWN = 'D'
+    FRONT = 'F'
+    BACK = 'B'
+    LEFT = 'L'
+    RIGHT = 'R'
+
+
 # TODO: add type hints
 class RubiksCube:
-    def __init__(self, faces=None):
+    def __init__(self, faces = None):
         if faces is not None:
-            self.faces = deepcopy(faces)
+            self.faces = copy.deepcopy(faces)
         else:
             self.faces = {
-                'U': np.full((3, 3), 'w'),
-                'D': np.full((3, 3), 'y'),
-                'F': np.full((3, 3), 'g'),
-                'B': np.full((3, 3), 'b'),
-                'L': np.full((3, 3), 'o'),
-                'R': np.full((3, 3), 'r')
+                CubeFace.UP: np.full((3, 3), 'w'),
+                CubeFace.DOWN: np.full((3, 3), 'y'),
+                CubeFace.FRONT: np.full((3, 3), 'g'),
+                CubeFace.BACK: np.full((3, 3), 'b'),
+                CubeFace.LEFT: np.full((3, 3), 'o'),
+                CubeFace.RIGHT: np.full((3, 3), 'r')
             }
 
     def rotate(self, face):
         self.faces[face] = np.rot90(self.faces[face], k=-1)
         if face == 'U':
-            temp = self.faces['L'][0].copy()
-            self.faces['L'][0] = self.faces['F'][0]
-            self.faces['F'][0] = self.faces['R'][0]
-            self.faces['R'][0] = self.faces['B'][0]
-            self.faces['B'][0] = temp
+            temp = self.faces[CubeFace.LEFT][0].copy()
+            self.faces[CubeFace.LEFT][0] = self.faces[CubeFace.FRONT][0]
+            self.faces[CubeFace.FRONT][0] = self.faces[CubeFace.RIGHT][0]
+            self.faces[CubeFace.RIGHT][0] = self.faces[CubeFace.BACK][0]
+            self.faces[CubeFace.BACK][0] = temp
         elif face == 'D':
-            temp = self.faces['B'][2].copy()
-            self.faces['B'][2] = self.faces['R'][2]
-            self.faces['R'][2] = self.faces['F'][2]
-            self.faces['F'][2] = self.faces['L'][2]
-            self.faces['L'][2] = temp
+            temp = self.faces[CubeFace.BACK][2].copy()
+            self.faces[CubeFace.BACK][2] = self.faces[CubeFace.RIGHT][2]
+            self.faces[CubeFace.RIGHT][2] = self.faces[CubeFace.FRONT][2]
+            self.faces[CubeFace.FRONT][2] = self.faces[CubeFace.LEFT][2]
+            self.faces[CubeFace.LEFT][2] = temp
         elif face == 'F':
-            temp = self.faces['D'][0].copy()
-            self.faces['D'][0] = np.flip(self.faces['R'][:, 0])
-            self.faces['R'][:, 0] = self.faces['U'][2]
-            self.faces['U'][2] = np.flip(self.faces['L'][:, 2])
-            self.faces['L'][:, 2] = temp
+            temp = self.faces[CubeFace.DOWN][0].copy()
+            self.faces[CubeFace.DOWN][0] = np.flip(self.faces[CubeFace.RIGHT][:, 0])
+            self.faces[CubeFace.RIGHT][:, 0] = self.faces[CubeFace.UP][2]
+            self.faces[CubeFace.UP][2] = np.flip(self.faces[CubeFace.LEFT][:, 2])
+            self.faces[CubeFace.LEFT][:, 2] = temp
         elif face == 'B':
-            temp = self.faces['R'][:, 2].copy()
-            self.faces['R'][:, 2] = np.flip(self.faces['D'][2])
-            self.faces['D'][2] = self.faces['L'][:, 0]
-            self.faces['L'][:, 0] = np.flip(self.faces['U'][0])
-            self.faces['U'][0] = temp
+            temp = self.faces[CubeFace.RIGHT][:, 2].copy()
+            self.faces[CubeFace.RIGHT][:, 2] = np.flip(self.faces[CubeFace.DOWN][2])
+            self.faces[CubeFace.DOWN][2] = self.faces[CubeFace.LEFT][:, 0]
+            self.faces[CubeFace.LEFT][:, 0] = np.flip(self.faces[CubeFace.UP][0])
+            self.faces[CubeFace.UP][0] = temp
         elif face == 'L':
-            temp = self.faces['F'][:, 0].copy()
-            self.faces['F'][:, 0] = self.faces['U'][:, 0]
-            self.faces['U'][:, 0] = np.flip(self.faces['B'][:, 2])
-            self.faces['B'][:, 2] = np.flip(self.faces['D'][:, 0])
-            self.faces['D'][:, 0] = temp
+            temp = self.faces[CubeFace.FRONT][:, 0].copy()
+            self.faces[CubeFace.FRONT][:, 0] = self.faces[CubeFace.UP][:, 0]
+            self.faces[CubeFace.UP][:, 0] = np.flip(self.faces[CubeFace.BACK][:, 2])
+            self.faces[CubeFace.BACK][:, 2] = np.flip(self.faces[CubeFace.DOWN][:, 0])
+            self.faces[CubeFace.DOWN][:, 0] = temp
         elif face == 'R':
-            temp = self.faces['D'][:, 2].copy()
-            self.faces['D'][:, 2] = np.flip(self.faces['B'][:, 0])
-            self.faces['B'][:, 0] = np.flip(self.faces['U'][:, 2])
-            self.faces['U'][:, 2] = self.faces['F'][:, 2]
-            self.faces['F'][:, 2] = temp
+            temp = self.faces[CubeFace.DOWN][:, 2].copy()
+            self.faces[CubeFace.DOWN][:, 2] = np.flip(self.faces[CubeFace.BACK][:, 0])
+            self.faces[CubeFace.BACK][:, 0] = np.flip(self.faces[CubeFace.UP][:, 2])
+            self.faces[CubeFace.UP][:, 2] = self.faces[CubeFace.FRONT][:, 2]
+            self.faces[CubeFace.FRONT][:, 2] = temp
         else:
             raise ValueError(f'Invalid face {face}')
 
@@ -80,14 +90,14 @@ class RubiksCube:
             self.rotate(move)
 
     def __str__(self):
-        def _stringify_numpy_array(array, prefix=''):
+        def _stringify_numpy_array(array, prefix = ''):
             return '\n'.join(prefix + ' '.join(row) for row in array)
 
-        middle = np.concatenate([self.faces['L'], self.faces['F'], self.faces['R'], self.faces['B']], axis=1)
+        middle = np.concatenate([self.faces[CubeFace.LEFT], self.faces[CubeFace.FRONT], self.faces[CubeFace.RIGHT], self.faces[CubeFace.BACK]], axis=1)
         return '\n'.join([
-            _stringify_numpy_array(self.faces['U'], prefix='      '),
+            _stringify_numpy_array(self.faces[CubeFace.UP], prefix='      '),
             _stringify_numpy_array(middle),
-            _stringify_numpy_array(self.faces['D'], prefix='      '),
+            _stringify_numpy_array(self.faces[CubeFace.DOWN], prefix='      '),
         ])
 
     def __eq__(self, other):

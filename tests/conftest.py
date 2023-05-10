@@ -1,8 +1,10 @@
 import numpy as np
 import pytest
 
+from rubiks_cube_checker.cube import CubeFace
 
-@pytest.fixture(params=["U", "D", "R", "L", "F", "B"])
+
+@pytest.fixture(params=['U', 'D', 'R', 'L', 'F', 'B'])
 def move(request):
     return request.param
 
@@ -11,35 +13,35 @@ def move(request):
 def scrambled_cube_state():
     """ A random cube scramble """
     return {
-        "U": np.array([
-            ["o", "r", "y"],
-            ["g", "w", "g"],
-            ["o", "y", "g"]
+        CubeFace.UP: np.array([
+            ['o', 'r', 'y'],
+            ['g', 'w', 'g'],
+            ['o', 'y', 'g']
         ]),
-        "D": np.array([
-            ["o", "w", "w"],
-            ["o", "y", "y"],
-            ["b", "b", "y"]
+        CubeFace.DOWN: np.array([
+            ['o', 'w', 'w'],
+            ['o', 'y', 'y'],
+            ['b', 'b', 'y']
         ]),
-        "F": np.array([
-            ["b", "r", "y"],
-            ["w", "g", "y"],
-            ["y", "g", "r"]
+        CubeFace.FRONT: np.array([
+            ['b', 'r', 'y'],
+            ['w', 'g', 'y'],
+            ['y', 'g', 'r']
         ]),
-        "B": np.array([
-            ["b", "g", "g"],
-            ["b", "b", "w"],
-            ["b", "w", "r"]
+        CubeFace.BACK: np.array([
+            ['b', 'g', 'g'],
+            ['b', 'b', 'w'],
+            ['b', 'w', 'r']
         ]),
-        "L": np.array([
-            ["w", "o", "w"],
-            ["o", "o", "r"],
-            ["w", "b", "g"]
+        CubeFace.LEFT: np.array([
+            ['w', 'o', 'w'],
+            ['o', 'o', 'r'],
+            ['w', 'b', 'g']
         ]),
-        "R": np.array([
-            ["r", "y", "o"],
-            ["b", "r", "r"],
-            ["g", "o", "r"]
+        CubeFace.RIGHT: np.array([
+            ['r', 'y', 'o'],
+            ['b', 'r', 'r'],
+            ['g', 'o', 'r']
         ])
     }
 
