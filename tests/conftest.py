@@ -1,3 +1,5 @@
+from typing import Dict, List
+
 import numpy as np
 import pytest
 
@@ -5,12 +7,12 @@ from rubiks_cube_checker.cube import CubeFace
 
 
 @pytest.fixture(params=['U', 'D', 'R', 'L', 'F', 'B'])
-def move(request):
+def move(request) -> str:
     return request.param
 
 
-@pytest.fixture
-def scrambled_cube_state():
+@pytest.fixture(scope='session')
+def scrambled_cube_state() -> Dict[CubeFace, np.ndarray]:
     """ A random cube scramble """
     return {
         CubeFace.UP: np.array([
@@ -47,7 +49,7 @@ def scrambled_cube_state():
 
 
 @pytest.fixture(scope='session')
-def cube_scramble_moves():
+def cube_scramble_moves() -> List[str]:
     """ The moves needed to reach the scrambled_cube_state starting with a solved cube """
     return [
         "B'", "R2", "F'", "B", "U'", "F", "L2",

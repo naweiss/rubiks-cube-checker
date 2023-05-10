@@ -1,7 +1,11 @@
-from rubiks_cube_checker.cube import RubiksCube
+from typing import Dict, List
+
+import numpy as np
+
+from rubiks_cube_checker.cube import RubiksCube, CubeFace
 
 
-def test_do_move_simple_notation(scrambled_cube_state, move):
+def test_do_move_simple_notation(scrambled_cube_state: Dict[CubeFace, np.ndarray], move: str) -> None:
     cube_a = RubiksCube(faces=scrambled_cube_state)
     cube_b = RubiksCube(faces=scrambled_cube_state)
 
@@ -11,7 +15,7 @@ def test_do_move_simple_notation(scrambled_cube_state, move):
     assert cube_b == cube_a
 
 
-def test_do_move_double_notation(scrambled_cube_state, move):
+def test_do_move_double_notation(scrambled_cube_state: Dict[CubeFace, np.ndarray], move: str) -> None:
     cube_a = RubiksCube(faces=scrambled_cube_state)
     cube_b = RubiksCube(faces=scrambled_cube_state)
 
@@ -22,7 +26,7 @@ def test_do_move_double_notation(scrambled_cube_state, move):
     assert cube_b == cube_a
 
 
-def test_do_move_inverse_notation(scrambled_cube_state, move):
+def test_do_move_inverse_notation(scrambled_cube_state: Dict[CubeFace, np.ndarray], move: str) -> None:
     cube_a = RubiksCube(faces=scrambled_cube_state)
     cube_b = RubiksCube(faces=scrambled_cube_state)
 
@@ -33,7 +37,7 @@ def test_do_move_inverse_notation(scrambled_cube_state, move):
     assert cube_b == cube_a
 
 
-def test_do_move_multiple(cube_scramble_moves, scrambled_cube_state):
+def test_do_move_multiple(cube_scramble_moves: List[str], scrambled_cube_state: Dict[CubeFace, np.ndarray]) -> None:
     cube = RubiksCube()
     for move in cube_scramble_moves:
         cube.do_move(move)
