@@ -5,6 +5,61 @@ import numpy as np
 from rubiks_cube_checker.cube import RubiksCube, CubeFace
 
 
-def test_rotate(scrambled_cube_state: Dict[CubeFace, np.ndarray], move: str) -> None:
+def test_u_rotate(scrambled_cube_state: Dict[CubeFace, np.ndarray],
+                  scrambled_cube_state_after_u_move: Dict[CubeFace, np.ndarray]) -> None:
     cube = RubiksCube(faces=scrambled_cube_state)
-    # TODO: fill in
+    cube.rotate('U')
+
+    rotated_cube = RubiksCube(faces=scrambled_cube_state_after_u_move)
+
+    assert cube == rotated_cube
+
+
+def test_d_rotate(scrambled_cube_state: Dict[CubeFace, np.ndarray],
+                  scrambled_cube_state_after_d_move: Dict[CubeFace, np.ndarray]) -> None:
+    cube = RubiksCube(faces=scrambled_cube_state)
+    cube.rotate('D')
+
+    rotated_cube = RubiksCube(faces=scrambled_cube_state_after_d_move)
+
+    assert cube == rotated_cube
+
+
+def test_f_rotate(scrambled_cube_state: Dict[CubeFace, np.ndarray],
+                  scrambled_cube_state_after_f_move: Dict[CubeFace, np.ndarray]) -> None:
+    cube = RubiksCube(faces=scrambled_cube_state)
+    cube.rotate('F')
+
+    rotated_cube = RubiksCube(faces=scrambled_cube_state_after_f_move)
+
+    assert cube == rotated_cube
+
+
+def test_b_rotate(scrambled_cube_state: Dict[CubeFace, np.ndarray],
+                  scrambled_cube_state_after_b_move: Dict[CubeFace, np.ndarray]) -> None:
+    cube = RubiksCube(faces=scrambled_cube_state)
+    cube.rotate('B')
+
+    rotated_cube = RubiksCube(faces=scrambled_cube_state_after_b_move)
+
+    assert cube == rotated_cube
+
+
+def test_r_rotate(scrambled_cube_state: Dict[CubeFace, np.ndarray],
+                  scrambled_cube_state_after_r_move: Dict[CubeFace, np.ndarray]) -> None:
+    cube = RubiksCube(faces=scrambled_cube_state)
+    cube.rotate('R')
+
+    rotated_cube = RubiksCube(faces=scrambled_cube_state_after_r_move)
+
+    assert cube == rotated_cube
+
+
+def test_l_rotate(scrambled_cube_state: Dict[CubeFace, np.ndarray],
+                  scrambled_cube_state_after_l_move: Dict[CubeFace, np.ndarray]) -> None:
+    cube = RubiksCube(faces=scrambled_cube_state)
+    cube.rotate('L')
+
+    rotated_cube = RubiksCube(faces=scrambled_cube_state_after_l_move)
+
+    assert cube == rotated_cube
