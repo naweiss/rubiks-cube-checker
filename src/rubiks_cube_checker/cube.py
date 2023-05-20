@@ -1,9 +1,11 @@
 from __future__ import annotations
-from typing import Dict, Optional, List, Union
+from typing import Dict, Optional, List, Union, Tuple
 import copy
 import enum
 
 import numpy as np
+
+from rubiks_cube_checker.math import permutation_parity
 
 
 class CubeFace(str, enum.Enum):
@@ -86,6 +88,76 @@ class RubiksCube:
         moves = self._split_move(move)
         for move in moves:
             self.rotate(move)
+
+    def _get_edge_pieces(self) -> List[Tuple[str, str]]:
+        return [
+            (self.faces[CubeFace.UP][0, 1], self.faces[CubeFace.BACK][0, 1]),
+            (self.faces[CubeFace.UP][1, 2], self.faces[CubeFace.RIGHT][0, 1]),
+            (self.faces[CubeFace.UP][2, 1], self.faces[CubeFace.FRONT][0, 1]),
+            (self.faces[CubeFace.UP][1, 0], self.faces[CubeFace.LEFT][0, 1]),
+            (self.faces[CubeFace.DOWN][0, 1], self.faces[CubeFace.FRONT][2, 1]),
+            (self.faces[CubeFace.DOWN][1, 2], self.faces[CubeFace.RIGHT][2, 1]),
+            (self.faces[CubeFace.DOWN][2, 1], self.faces[CubeFace.BACK][2, 1]),
+            (self.faces[CubeFace.DOWN][1, 0], self.faces[CubeFace.LEFT][2, 1]),
+            (self.faces[CubeFace.FRONT][1, 2], self.faces[CubeFace.RIGHT][1, 0]),
+            (self.faces[CubeFace.FRONT][1, 0], self.faces[CubeFace.LEFT][1, 2]),
+            (self.faces[CubeFace.BACK][1, 2], self.faces[CubeFace.LEFT][1, 0]),
+            (self.faces[CubeFace.BACK][1, 0], self.faces[CubeFace.RIGHT][1, 2]),
+        ]
+
+    def _get_corner_pieces(self) -> List[Tuple[str, str, str]]:
+        return [
+            (self.faces[CubeFace.UP][0, 0], self.faces[CubeFace.BACK][0, 2], self.faces[CubeFace.LEFT][0, 0]),
+            (self.faces[CubeFace.UP][0, 2], self.faces[CubeFace.RIGHT][0, 2], self.faces[CubeFace.BACK][0, 0]),
+            (self.faces[CubeFace.UP][2, 0], self.faces[CubeFace.LEFT][0, 2], self.faces[CubeFace.FRONT][0, 0]),
+            (self.faces[CubeFace.UP][2, 2], self.faces[CubeFace.FRONT][0, 2], self.faces[CubeFace.RIGHT][0, 0]),
+            (self.faces[CubeFace.DOWN][0, 0], self.faces[CubeFace.FRONT][2, 0], self.faces[CubeFace.LEFT][2, 2]),
+            (self.faces[CubeFace.DOWN][0, 2], self.faces[CubeFace.RIGHT][2, 0], self.faces[CubeFace.FRONT][2, 2]),
+            (self.faces[CubeFace.DOWN][2, 0], self.faces[CubeFace.LEFT][2, 0], self.faces[CubeFace.BACK][2, 2]),
+            (self.faces[CubeFace.DOWN][2, 2], self.faces[CubeFace.BACK][2, 0], self.faces[CubeFace.RIGHT][2, 2]),
+        ]
+
+    @staticmethod
+    def _get_edge_parity(edge: Tuple[str, str]) -> int:
+        if edge[0] == 'w' or edge[0] == 'y':
+            return 0
+        if edge[0] == 'g' or edge[0] == 'b':
+            if edge[1] == 'r' or edge[1] == 'o':
+                return 0
+        return 1
+
+    @staticmethod
+    def _get_corner_parity(corner: Tuple[str, str, str]) -> int:
+        if corner[0] == 'w' or corner[0] == 'y':
+            return 0
+        if corner[1] == 'w' or corner[1] == 'y':
+            return 1
+        return 2
+
+    def _total_edge_parity(self) -> int:
+        return sum([self._get_edge_parity(edge) for edge in self._get_edge_pieces()])
+
+    def _total_corner_parity(self) -> int:
+        return sum([self._get_corner_parity(corner) for corner in self._get_corner_pieces()])
+
+    def _total_edge_permutation_parity(self) -> int:
+        return permutation_parity(
+            current_state=self._get_edge_pieces(),
+            solved_state=RubiksCube()._get_edge_pieces()
+        )
+
+    def _total_corner_permutation_parity(self) -> int:
+        return permutation_parity(
+            current_state=self._get_corner_pieces(),
+            solved_state=RubiksCube()._get_corner_pieces()
+        )
+
+    def is_solvable(self) -> bool:
+        return (
+                self._total_edge_parity() % 2 == 0 and
+                self._total_corner_parity() % 3 == 0 and
+                self._total_edge_permutation_parity() == self._total_corner_permutation_parity()
+        )
 
     def __str__(self) -> str:
         def _stringify_numpy_array(array: np.ndarray, prefix: str = '') -> str:
