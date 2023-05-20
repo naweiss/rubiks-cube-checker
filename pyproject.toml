@@ -4,8 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rubiks-cube-checker"
-version = "0.0.1"
-description = "Python package to check if a Rubik's cube assembly is solveable"
+description = "Python package to check if a Rubik's cube assembly is solvable"
+authors = [
+    {name="Nadav Weiss", email="naweiss@g.jct.ac.il"},
+]
+dynamic = ["version"]
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
@@ -14,13 +17,24 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
 ]
 requires-python=">=3.7"
+keywords=["rubiks", "cube", "checker"]
 dependencies = [
     "numpy>=1.13",
 ]
+
+[project.urls]
+"Homepage" = "https://github.com/naweiss/rubiks-cube-checker"
 
 [project.optional-dependencies]
 test = [
     "pytest",
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = {attr = "rubiks_cube_checker.__version__"}
