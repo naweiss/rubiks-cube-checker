@@ -38,3 +38,17 @@ where = ["src"]
 
 [tool.setuptools.dynamic]
 version = {attr = "rubiks_cube_checker.__version__"}
+
+[tool.ruff]
+target-version = "py37"
+# Increase the maximum line length to 120 characters.
+line-length = 120
+src = ["src"]
+
+[tool.mypy]
+python_version = "3.7"
+strict = true
+allow_any_generics = true
+exclude = [
+    'build'  # Confuses mypy
+]
