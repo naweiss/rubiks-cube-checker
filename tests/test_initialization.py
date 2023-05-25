@@ -5,7 +5,7 @@ import numpy as np
 from rubiks_cube_checker.cube import RubiksCube, CubeFace
 
 
-def test_default_cube():
+def test_default_cube() -> None:
     cube = RubiksCube()
     assert np.array_equal(cube.faces[CubeFace.UP], np.full(shape=(3, 3), fill_value='w'))
     assert np.array_equal(cube.faces[CubeFace.DOWN], np.full(shape=(3, 3), fill_value='y'))
@@ -15,7 +15,7 @@ def test_default_cube():
     assert np.array_equal(cube.faces[CubeFace.BACK], np.full(shape=(3, 3), fill_value='b'))
 
 
-def test_initialization(scrambled_cube_state: Dict[CubeFace, np.ndarray]) -> None:
+def test_initialization(scrambled_cube_state: Dict[str, np.ndarray]) -> None:
     cube = RubiksCube(faces=scrambled_cube_state)
     assert np.array_equal(cube.faces[CubeFace.UP], scrambled_cube_state[CubeFace.UP])
     assert np.array_equal(cube.faces[CubeFace.DOWN], scrambled_cube_state[CubeFace.DOWN])

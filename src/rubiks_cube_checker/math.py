@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple
+from typing import Dict, Tuple, Sequence
 
 
 def _sort_dict(d: Dict) -> Dict:
@@ -8,7 +8,7 @@ def _sort_dict(d: Dict) -> Dict:
     return sorted_dict
 
 
-def permutation_parity(current_state: List[Tuple[str, ...]], solved_state: List[Tuple[str, ...]]) -> int:
+def permutation_parity(current_state: Sequence[Tuple[str, ...]], solved_state: Sequence[Tuple[str, ...]]) -> int:
     parings = {
         element: solved_element
         for element, solved_element in zip(current_state, solved_state)

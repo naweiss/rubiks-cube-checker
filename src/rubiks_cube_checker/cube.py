@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Dict, Optional, List, Union, Tuple
+from typing import Dict, Optional, List, Tuple
 import copy
 import enum
 
@@ -18,11 +18,13 @@ class CubeFace(str, enum.Enum):
 
 
 class RubiksCube:
-    def __init__(self, faces: Optional[Dict[CubeFace, np.ndarray]] = None) -> None:
+    def __init__(self, faces: Optional[Dict[str, np.ndarray]] = None) -> None:
+        self.faces: Dict[str, np.ndarray]
+
         if faces is not None:
-            self.faces: Dict[CubeFace, np.ndarray] = copy.deepcopy(faces)
+            self.faces = copy.deepcopy(faces)
         else:
-            self.faces: Dict[CubeFace, np.ndarray] = {
+            self.faces = {
                 CubeFace.UP: np.full((3, 3), 'w'),
                 CubeFace.DOWN: np.full((3, 3), 'y'),
                 CubeFace.FRONT: np.full((3, 3), 'g'),
@@ -31,7 +33,7 @@ class RubiksCube:
                 CubeFace.RIGHT: np.full((3, 3), 'r')
             }
 
-    def rotate(self, face: Union[CubeFace, str]) -> None:
+    def rotate(self, face: str) -> None:
         self.faces[face] = np.rot90(self.faces[face], k=-1)
         if face == CubeFace.UP:
             temp = self.faces[CubeFace.LEFT][0].copy()
@@ -171,5 +173,7 @@ class RubiksCube:
             _stringify_numpy_array(self.faces[CubeFace.DOWN], prefix='      '),
         ])
 
-    def __eq__(self, other: RubiksCube) -> bool:
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, RubiksCube):
+            return NotImplemented
         return all(np.array_equal(self.faces[face], other.faces[face]) for face in self.faces.keys())

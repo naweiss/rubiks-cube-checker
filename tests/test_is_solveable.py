@@ -11,7 +11,7 @@ def test_solvable_sanity() -> None:
     assert cube.is_solvable()
 
 
-def test_solvable_scrambled(scrambled_cube_state: Dict[CubeFace, np.ndarray]) -> None:
+def test_solvable_scrambled(scrambled_cube_state: Dict[str, np.ndarray]) -> None:
     cube = RubiksCube(faces=scrambled_cube_state)
     assert cube.is_solvable()
 

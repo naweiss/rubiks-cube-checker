@@ -2,17 +2,18 @@ from typing import Dict, List
 
 import numpy as np
 import pytest
+from _pytest.fixtures import SubRequest
 
 from rubiks_cube_checker.cube import CubeFace
 
 
 @pytest.fixture(params=['U', 'D', 'R', 'L', 'F', 'B'])
-def move(request) -> str:
-    return request.param
+def move(request: SubRequest) -> str:
+    return request.param  # type: ignore[no-any-return]
 
 
 @pytest.fixture(scope='session')
-def scrambled_cube_state() -> Dict[CubeFace, np.ndarray]:
+def scrambled_cube_state() -> Dict[str, np.ndarray]:
     """ A random cube scramble """
     return {
         CubeFace.UP: np.array([
@@ -60,7 +61,7 @@ def cube_scramble_moves() -> List[str]:
 
 
 @pytest.fixture(scope='session')
-def scrambled_cube_state_after_u_move() -> Dict[CubeFace, np.ndarray]:
+def scrambled_cube_state_after_u_move() -> Dict[str, np.ndarray]:
     """ The cube state after a U move starting with scrambled_cube_state """
     return {
         CubeFace.UP: np.array([
@@ -97,7 +98,7 @@ def scrambled_cube_state_after_u_move() -> Dict[CubeFace, np.ndarray]:
 
 
 @pytest.fixture(scope='session')
-def scrambled_cube_state_after_d_move() -> Dict[CubeFace, np.ndarray]:
+def scrambled_cube_state_after_d_move() -> Dict[str, np.ndarray]:
     """ The cube state after a D move starting with scrambled_cube_state """
     return {
         CubeFace.UP: np.array([
@@ -134,7 +135,7 @@ def scrambled_cube_state_after_d_move() -> Dict[CubeFace, np.ndarray]:
 
 
 @pytest.fixture(scope='session')
-def scrambled_cube_state_after_f_move() -> Dict[CubeFace, np.ndarray]:
+def scrambled_cube_state_after_f_move() -> Dict[str, np.ndarray]:
     """ The cube state after an F move starting with scrambled_cube_state """
     return {
         CubeFace.UP: np.array([
@@ -171,7 +172,7 @@ def scrambled_cube_state_after_f_move() -> Dict[CubeFace, np.ndarray]:
 
 
 @pytest.fixture(scope='session')
-def scrambled_cube_state_after_b_move() -> Dict[CubeFace, np.ndarray]:
+def scrambled_cube_state_after_b_move() -> Dict[str, np.ndarray]:
     """ The cube state after a B move starting with scrambled_cube_state """
     return {
         CubeFace.UP: np.array([
@@ -208,7 +209,7 @@ def scrambled_cube_state_after_b_move() -> Dict[CubeFace, np.ndarray]:
 
 
 @pytest.fixture(scope='session')
-def scrambled_cube_state_after_r_move() -> Dict[CubeFace, np.ndarray]:
+def scrambled_cube_state_after_r_move() -> Dict[str, np.ndarray]:
     """ The cube state after an R move starting with scrambled_cube_state """
     return {
         CubeFace.UP: np.array([
@@ -245,7 +246,7 @@ def scrambled_cube_state_after_r_move() -> Dict[CubeFace, np.ndarray]:
 
 
 @pytest.fixture(scope='session')
-def scrambled_cube_state_after_l_move() -> Dict[CubeFace, np.ndarray]:
+def scrambled_cube_state_after_l_move() -> Dict[str, np.ndarray]:
     """ The cube state after an L move starting with scrambled_cube_state """
     return {
         CubeFace.UP: np.array([
