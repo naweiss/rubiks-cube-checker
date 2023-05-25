@@ -2,7 +2,7 @@ from typing import Dict
 
 import numpy as np
 
-from rubiks_cube_checker.cube import RubiksCube, CubeFace
+from rubiks_cube_checker.cube import CubeFace, RubiksCube
 
 
 def test_default_cube() -> None:

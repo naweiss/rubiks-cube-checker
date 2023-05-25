@@ -1,7 +1,8 @@
 from __future__ import annotations
-from typing import Dict, Optional, List, Tuple
+
 import copy
 import enum
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -18,6 +19,8 @@ class CubeFace(str, enum.Enum):
 
 
 class RubiksCube:
+    MAX_MOVE_LENGTH = 2  # something like U2 or U'
+
     def __init__(self, faces: Optional[Dict[str, np.ndarray]] = None) -> None:
         self.faces: Dict[str, np.ndarray]
 
@@ -30,7 +33,7 @@ class RubiksCube:
                 CubeFace.FRONT: np.full((3, 3), 'g'),
                 CubeFace.BACK: np.full((3, 3), 'b'),
                 CubeFace.LEFT: np.full((3, 3), 'o'),
-                CubeFace.RIGHT: np.full((3, 3), 'r')
+                CubeFace.RIGHT: np.full((3, 3), 'r'),
             }
 
     def rotate(self, face: str) -> None:
@@ -74,11 +77,12 @@ class RubiksCube:
         else:
             raise ValueError(f'Invalid face {face}')
 
-    @staticmethod
-    def _split_move(move: str) -> List[str]:
-        if len(move) > 2:
+    @classmethod
+    def _split_move(cls, move: str) -> List[str]:
+        if len(move) > cls.MAX_MOVE_LENGTH:
             raise ValueError(f'Invalid move {move}')
-        elif move.endswith("'"):
+
+        if move.endswith("'"):
             times = 3
         elif move.endswith('2'):
             times = 2
@@ -123,9 +127,8 @@ class RubiksCube:
     def _get_edge_parity(edge: Tuple[str, str]) -> int:
         if edge[0] == 'w' or edge[0] == 'y':
             return 0
-        if edge[0] == 'g' or edge[0] == 'b':
-            if edge[1] == 'r' or edge[1] == 'o':
-                return 0
+        if (edge[0] == 'g' or edge[0] == 'b') and (edge[1] == 'r' or edge[1] == 'o'):
+            return 0
         return 1
 
     @staticmethod
@@ -145,13 +148,13 @@ class RubiksCube:
     def _total_edge_permutation_parity(self) -> int:
         return permutation_parity(
             current_state=self._get_edge_pieces(),
-            solved_state=RubiksCube()._get_edge_pieces()
+            solved_state=RubiksCube()._get_edge_pieces(),  # noqa: SLF001
         )
 
     def _total_corner_permutation_parity(self) -> int:
         return permutation_parity(
             current_state=self._get_corner_pieces(),
-            solved_state=RubiksCube()._get_corner_pieces()
+            solved_state=RubiksCube()._get_corner_pieces(),  # noqa: SLF001
         )
 
     def is_solvable(self) -> bool:
@@ -176,4 +179,4 @@ class RubiksCube:
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, RubiksCube):
             return NotImplemented
-        return all(np.array_equal(self.faces[face], other.faces[face]) for face in self.faces.keys())
+        return all(np.array_equal(self.faces[face], other.faces[face]) for face in self.faces)

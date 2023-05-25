@@ -2,7 +2,7 @@ from typing import Dict, List
 
 import numpy as np
 
-from rubiks_cube_checker.cube import RubiksCube, CubeFace
+from rubiks_cube_checker.cube import RubiksCube
 
 
 def test_do_move_simple_notation(scrambled_cube_state: Dict[str, np.ndarray], move: str) -> None:

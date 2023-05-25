@@ -1,18 +1,14 @@
-from typing import Dict, Tuple, Sequence
+from typing import Dict, Sequence, Tuple
 
 
 def _sort_dict(d: Dict) -> Dict:
-    sorted_keys = [tuple(sorted(k)) for k in d.keys()]
+    sorted_keys = [tuple(sorted(k)) for k in d]
     sorted_values = [tuple(sorted(v)) for v in d.values()]
-    sorted_dict = dict(zip(sorted_keys, sorted_values))
-    return sorted_dict
+    return dict(zip(sorted_keys, sorted_values))
 
 
 def permutation_parity(current_state: Sequence[Tuple[str, ...]], solved_state: Sequence[Tuple[str, ...]]) -> int:
-    parings = {
-        element: solved_element
-        for element, solved_element in zip(current_state, solved_state)
-    }
+    parings = dict(zip(current_state, solved_state))
 
     parings = _sort_dict(parings)
     keys = list(parings.keys())

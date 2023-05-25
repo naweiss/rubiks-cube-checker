@@ -2,7 +2,7 @@ from typing import Dict
 
 import numpy as np
 
-from rubiks_cube_checker.cube import RubiksCube, CubeFace
+from rubiks_cube_checker.cube import RubiksCube
 
 
 def test_equality_sanity(scrambled_cube_state: Dict[str, np.ndarray]) -> None:
