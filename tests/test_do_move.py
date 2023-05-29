@@ -41,7 +41,7 @@ def test_do_move_inverse_notation(scrambled_cube_state: Dict[str, NDArray], move
 
 
 def test_do_move_multiple(cube_scramble_moves: List[str], scrambled_cube_state: Dict[str, NDArray]) -> None:
-    cube = RubiksCube()
+    cube = RubiksCube.solved_cube()
     for move in cube_scramble_moves:
         cube.do_move(move)
 

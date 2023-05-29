@@ -11,13 +11,13 @@ if TYPE_CHECKING:
 
 
 def test_default_cube() -> None:
-    cube = RubiksCube()
-    assert np.array_equal(cube.faces[CubeFace.UP], np.full(shape=(3, 3), fill_value='w'))
-    assert np.array_equal(cube.faces[CubeFace.DOWN], np.full(shape=(3, 3), fill_value='y'))
-    assert np.array_equal(cube.faces[CubeFace.LEFT], np.full(shape=(3, 3), fill_value='o'))
-    assert np.array_equal(cube.faces[CubeFace.RIGHT], np.full(shape=(3, 3), fill_value='r'))
-    assert np.array_equal(cube.faces[CubeFace.FRONT], np.full(shape=(3, 3), fill_value='g'))
-    assert np.array_equal(cube.faces[CubeFace.BACK], np.full(shape=(3, 3), fill_value='b'))
+    solved_cube = RubiksCube.solved_cube()
+    assert np.array_equal(solved_cube.faces[CubeFace.UP], np.full(shape=(3, 3), fill_value='w'))
+    assert np.array_equal(solved_cube.faces[CubeFace.DOWN], np.full(shape=(3, 3), fill_value='y'))
+    assert np.array_equal(solved_cube.faces[CubeFace.LEFT], np.full(shape=(3, 3), fill_value='o'))
+    assert np.array_equal(solved_cube.faces[CubeFace.RIGHT], np.full(shape=(3, 3), fill_value='r'))
+    assert np.array_equal(solved_cube.faces[CubeFace.FRONT], np.full(shape=(3, 3), fill_value='g'))
+    assert np.array_equal(solved_cube.faces[CubeFace.BACK], np.full(shape=(3, 3), fill_value='b'))
 
 
 def test_initialization(scrambled_cube_state: Dict[str, NDArray]) -> None:

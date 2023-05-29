@@ -15,7 +15,7 @@ def test_equality_sanity(scrambled_cube_state: Dict[str, NDArray]) -> None:
 
 
 def test_inequality_sanity(scrambled_cube_state: Dict[str, NDArray]) -> None:
-    solved_cube = RubiksCube()
+    solved_cube = RubiksCube.solved_cube()
     scrambled_cube = RubiksCube(faces=scrambled_cube_state)
     assert solved_cube != scrambled_cube
 

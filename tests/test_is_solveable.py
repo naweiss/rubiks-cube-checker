@@ -10,8 +10,8 @@ if TYPE_CHECKING:
 
 
 def test_solvable_sanity() -> None:
-    cube = RubiksCube()
-    assert cube.is_solvable()
+    solved_cube = RubiksCube.solved_cube()
+    assert solved_cube.is_solvable()
 
 
 def test_solvable_scrambled(scrambled_cube_state: Dict[str, NDArray]) -> None:
@@ -20,7 +20,7 @@ def test_solvable_scrambled(scrambled_cube_state: Dict[str, NDArray]) -> None:
 
 
 def test_solvable_complex() -> None:
-    cube = RubiksCube()
+    cube = RubiksCube.solved_cube()
     for _ in range(100):
         for move in random.choice(["U", "D", "R", "L", "F", "B"]):
             cube.do_move(move)
@@ -28,7 +28,7 @@ def test_solvable_complex() -> None:
 
 
 def test_not_solvable_twisted_corner() -> None:
-    cube = RubiksCube()
+    cube = RubiksCube.solved_cube()
 
     # Twist single corner
     temp = cube.faces[CubeFace.DOWN][0, 2]
@@ -48,7 +48,7 @@ def test_not_solvable_twisted_corner() -> None:
 
 
 def test_not_solvable_multiple_twisted_corners() -> None:
-    cube = RubiksCube()
+    cube = RubiksCube.solved_cube()
 
     # Twist 2 different corners
     temp = cube.faces[CubeFace.DOWN][0, 2]
@@ -64,7 +64,7 @@ def test_not_solvable_multiple_twisted_corners() -> None:
 
 
 def test_not_solvable_flipped_edge() -> None:
-    cube = RubiksCube()
+    cube = RubiksCube.solved_cube()
 
     # Flip single edge
     temp = cube.faces[CubeFace.UP][2, 1]
@@ -75,7 +75,7 @@ def test_not_solvable_flipped_edge() -> None:
 
 
 def test_not_solvable_multiple_flipped_edges() -> None:
-    cube = RubiksCube()
+    cube = RubiksCube.solved_cube()
 
     # Flip 3 edges
     temp = cube.faces[CubeFace.UP][2, 1]

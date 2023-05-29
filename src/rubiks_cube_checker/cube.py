@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import copy
 import enum
-from typing import TYPE_CHECKING, Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Dict, List, Tuple
 
 import numpy as np
 
@@ -24,20 +24,19 @@ class CubeFace(str, enum.Enum):
 class RubiksCube:
     MAX_MOVE_LENGTH = 2  # something like U2 or U'
 
-    def __init__(self, faces: Optional[Dict[str, NDArray]] = None) -> None:
-        self.faces: Dict[str, NDArray]
+    def __init__(self, faces: Dict[str, NDArray]) -> None:
+        self.faces: Dict[str, NDArray] = copy.deepcopy(faces)
 
-        if faces is not None:
-            self.faces = copy.deepcopy(faces)
-        else:
-            self.faces = {
-                CubeFace.UP: np.full((3, 3), 'w'),
-                CubeFace.DOWN: np.full((3, 3), 'y'),
-                CubeFace.FRONT: np.full((3, 3), 'g'),
-                CubeFace.BACK: np.full((3, 3), 'b'),
-                CubeFace.LEFT: np.full((3, 3), 'o'),
-                CubeFace.RIGHT: np.full((3, 3), 'r'),
-            }
+    @staticmethod
+    def solved_cube() -> RubiksCube:
+        return RubiksCube({
+            CubeFace.UP: np.full((3, 3), 'w'),
+            CubeFace.DOWN: np.full((3, 3), 'y'),
+            CubeFace.FRONT: np.full((3, 3), 'g'),
+            CubeFace.BACK: np.full((3, 3), 'b'),
+            CubeFace.LEFT: np.full((3, 3), 'o'),
+            CubeFace.RIGHT: np.full((3, 3), 'r'),
+        })
 
     def rotate(self, face: str) -> None:
         self.faces[face] = np.rot90(self.faces[face], k=-1)
@@ -151,13 +150,13 @@ class RubiksCube:
     def _total_edge_permutation_parity(self) -> int:
         return permutation_parity(
             current_state=self._get_edge_pieces(),
-            solved_state=RubiksCube()._get_edge_pieces(),  # noqa: SLF001
+            solved_state=self.solved_cube()._get_edge_pieces(),  # noqa: SLF001
         )
 
     def _total_corner_permutation_parity(self) -> int:
         return permutation_parity(
             current_state=self._get_corner_pieces(),
-            solved_state=RubiksCube()._get_corner_pieces(),  # noqa: SLF001
+            solved_state=self.solved_cube()._get_corner_pieces(),  # noqa: SLF001
         )
 
     def is_solvable(self) -> bool:
