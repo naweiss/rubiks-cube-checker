@@ -1,8 +1,13 @@
-from typing import Dict
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Dict
 
 import numpy as np
 
 from rubiks_cube_checker.cube import CubeFace, RubiksCube
+
+if TYPE_CHECKING:
+    from numpy.typing import NDArray
 
 
 def test_default_cube() -> None:
@@ -15,7 +20,7 @@ def test_default_cube() -> None:
     assert np.array_equal(cube.faces[CubeFace.BACK], np.full(shape=(3, 3), fill_value='b'))
 
 
-def test_initialization(scrambled_cube_state: Dict[str, np.ndarray]) -> None:
+def test_initialization(scrambled_cube_state: Dict[str, NDArray]) -> None:
     cube = RubiksCube(faces=scrambled_cube_state)
     assert np.array_equal(cube.faces[CubeFace.UP], scrambled_cube_state[CubeFace.UP])
     assert np.array_equal(cube.faces[CubeFace.DOWN], scrambled_cube_state[CubeFace.DOWN])

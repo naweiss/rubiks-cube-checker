@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import copy
 import enum
-from typing import Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Dict, List, Optional, Tuple
 
 import numpy as np
 
 from rubiks_cube_checker.math import permutation_parity
+
+if TYPE_CHECKING:
+    from numpy.typing import NDArray
 
 
 class CubeFace(str, enum.Enum):
@@ -21,8 +24,8 @@ class CubeFace(str, enum.Enum):
 class RubiksCube:
     MAX_MOVE_LENGTH = 2  # something like U2 or U'
 
-    def __init__(self, faces: Optional[Dict[str, np.ndarray]] = None) -> None:
-        self.faces: Dict[str, np.ndarray]
+    def __init__(self, faces: Optional[Dict[str, NDArray]] = None) -> None:
+        self.faces: Dict[str, NDArray]
 
         if faces is not None:
             self.faces = copy.deepcopy(faces)
@@ -165,7 +168,7 @@ class RubiksCube:
         )
 
     def __str__(self) -> str:
-        def _stringify_numpy_array(array: np.ndarray, prefix: str = '') -> str:
+        def _stringify_numpy_array(array: NDArray, prefix: str = '') -> str:
             return '\n'.join(prefix + ' '.join(row) for row in array)
 
         middle = np.concatenate([self.faces[CubeFace.LEFT], self.faces[CubeFace.FRONT], self.faces[CubeFace.RIGHT],

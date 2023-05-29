@@ -1,9 +1,12 @@
-import random
-from typing import Dict
+from __future__ import annotations
 
-import numpy as np
+import random
+from typing import TYPE_CHECKING, Dict
 
 from rubiks_cube_checker.cube import CubeFace, RubiksCube
+
+if TYPE_CHECKING:
+    from numpy.typing import NDArray
 
 
 def test_solvable_sanity() -> None:
@@ -11,7 +14,7 @@ def test_solvable_sanity() -> None:
     assert cube.is_solvable()
 
 
-def test_solvable_scrambled(scrambled_cube_state: Dict[str, np.ndarray]) -> None:
+def test_solvable_scrambled(scrambled_cube_state: Dict[str, NDArray]) -> None:
     cube = RubiksCube(faces=scrambled_cube_state)
     assert cube.is_solvable()
 
