@@ -149,14 +149,14 @@ class RubiksCube:
 
     def _total_edge_permutation_parity(self) -> int:
         return permutation_parity(
-            current_state=self._get_edge_pieces(),
-            solved_state=self.solved_cube()._get_edge_pieces(),  # noqa: SLF001
+            permutation=self._get_edge_pieces(),
+            natural_order=self.solved_cube()._get_edge_pieces(),  # noqa: SLF001
         )
 
     def _total_corner_permutation_parity(self) -> int:
         return permutation_parity(
-            current_state=self._get_corner_pieces(),
-            solved_state=self.solved_cube()._get_corner_pieces(),  # noqa: SLF001
+            permutation=self._get_corner_pieces(),
+            natural_order=self.solved_cube()._get_corner_pieces(),  # noqa: SLF001
         )
 
     def is_solvable(self) -> bool:

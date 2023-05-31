@@ -1,23 +1,30 @@
-from typing import Dict, Sequence, Tuple
+from typing import FrozenSet, Iterator, Sequence, Tuple
 
 
-def _sort_dict(d: Dict) -> Dict:
-    sorted_keys = [tuple(sorted(k)) for k in d]
-    sorted_values = [tuple(sorted(v)) for v in d.values()]
-    return dict(zip(sorted_keys, sorted_values))
+def _to_frozen_sets(tuples: Sequence[Tuple]) -> Iterator[FrozenSet]:
+    return (frozenset(_tuple) for _tuple in tuples)
 
 
-def permutation_parity(current_state: Sequence[Tuple[str, ...]], solved_state: Sequence[Tuple[str, ...]]) -> int:
-    parings = dict(zip(current_state, solved_state))
+def permutation_parity(permutation: Sequence[Tuple], natural_order: Sequence[Tuple]) -> int:
+    """
+    Calculate the parity of the permutation of a sequence given its natural order.
+    e.g. does the number of swapped elements in the sequence (based on the natural order) is even or odd.
 
-    parings = _sort_dict(parings)
-    keys = list(parings.keys())
+    :param permutation: Some ordering of elements
+    :type permutation: Sequence of tuples (elements), each tuple represent a set (the order does not matter)
+    :param natural_order: The natural order of the elements
+    :type permutation: Sequence of tuples (elements), each tuple represent a set (the order does not matter)
+    :return: 1 if the permutation is odd and 0 if it is even
+    """
+    keys = list(_to_frozen_sets(permutation))
+
+    state_mappings = dict(zip(keys, _to_frozen_sets(natural_order)))
     permutations = 0
     while len(keys) > 0:
         start_key = keys.pop()
         key = start_key
         while True:
-            key = parings[key]
+            key = state_mappings[key]
             if key == start_key:
                 break
             permutations += 1
