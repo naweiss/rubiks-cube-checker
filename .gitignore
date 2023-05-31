@@ -1,2 +1,4 @@
+rubiks_cube_checker.egg-info/
+dist/
 __pycache__/
 .idea/
